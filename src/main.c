@@ -216,7 +216,7 @@ int main()
     int key = getch();
     if (key == 'p' || key == 'P') {
       rooms++;
-      room = randomizePosition(wnd,room,col,row,4,iterations);
+      room = randomizePosition(wnd,room,col,row,firstPosition,iterations);
       drawRoom(room);
       drawDoor(room);
     }
