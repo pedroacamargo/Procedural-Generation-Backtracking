@@ -100,45 +100,52 @@ NormalRoom * randomizePosition(WINDOW * wnd,NormalRoom * room, int col, int row,
   if (iterations == 12) return room;
   iterations++;
   NormalRoom * newRoom = createNormalRoom(&row,&col);
-
   Position p = room->pos;
+  int top = 10, right = 12, bottom = 3;
   int x = 0, y = 0;
-  int distanceX = 7;
+  int distanceX = 13;
   int distance = 5;
   switch (first) {
     case 1:
       x = p.x - newRoom->width - distanceX;
       y = p.y - newRoom->height - distance;
+      makeDoor(top,room);
       first++;
       break;
     case 2:
-      x = p.x + (newRoom->width / 4);
+      x = p.x - (newRoom->width / 4);
       y = p.y - newRoom->height - distance;
+      makeDoor(top,room);
       first++;
       break;
     case 3:
-      x = p.x + (newRoom->width * (3/4));
+      x = p.x + (newRoom->width + (distanceX/2));
       y = p.y - newRoom->height - distance;
+      makeDoor(top,room);
       first++;
       break;
     case 4:
       x = p.x + (newRoom->width + distanceX);
-      y = p.y + (newRoom->height - distance);
+      y = p.y - (newRoom->height + distance);
+      makeDoor(top,room);
       first++;
       break;
     case 5:
       x = p.x + (newRoom->width + distanceX);
-      y = p.y;
+      y = p.y - (newRoom->height / 2);
+      makeDoor(right,room);
       first++;
       break;
     case 6:
       x = p.x + (newRoom->width + distanceX);
-      y = p.y + newRoom->height;
+      y = p.y + (newRoom->height / 2);
+      makeDoor(right,room);
       first++;
       break;
     case 7:
       x = p.x + (newRoom->width + distanceX);
       y = p.y + (newRoom->height + distance);
+      makeDoor(bottom,room);
       first++;
       break;
     case 8:
@@ -158,7 +165,7 @@ NormalRoom * randomizePosition(WINDOW * wnd,NormalRoom * room, int col, int row,
       break;
     case 11:
       x = p.x - newRoom->width - distanceX;
-      y = p.y + (newRoom->height * 2/4);
+      y = p.y + (newRoom->height / 2);
       first++;
       break;
     case 12:
@@ -176,6 +183,7 @@ NormalRoom * randomizePosition(WINDOW * wnd,NormalRoom * room, int col, int row,
     newRoom->pos.x = x;
     newRoom->pos.y = y;
     newRoom = makeDoor(first, newRoom);
+    drawDoor(room);
     return newRoom;
   }
 }
@@ -216,7 +224,7 @@ int main()
     int key = getch();
     if (key == 'p' || key == 'P') {
       rooms++;
-      room = randomizePosition(wnd,room,col,row,firstPosition,iterations);
+      room = randomizePosition(wnd,room,col,row,7,iterations);
       drawRoom(room);
       drawDoor(room);
     }
