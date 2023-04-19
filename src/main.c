@@ -183,10 +183,11 @@ NormalRoom * randomizePosition(WINDOW * wnd,NormalRoom * room, int col, int row,
   if (has == 1) {
     free(newRoom);
     if (first == 12) first = 1;
-    randomizePosition(wnd,room,col,row,first,iterations);
+    return randomizePosition(wnd,room,col,row,first,iterations);
   } else {
     newRoom->pos.x = x;
     newRoom->pos.y = y;
+    if (newRoom->pos.x == room->pos.x && newRoom->pos.y == room->pos.y) return room;
     newRoom = makeDoor(first, newRoom);
     drawDoor(room);
     return newRoom;
@@ -202,7 +203,7 @@ int checkPos(NormalRoom * room, int randomY, int randomX, WINDOW * wnd, int cols
   for (int x = areaXstart;x < areaXend; x++) {
     for (int y = areaYstart; y < areaYend; y++) {
       refresh(); 
-      if (mvwinch(wnd,y,x) == '.' || mvwinch(wnd,y,x) == '#' || (y > cols - room->height || y < 0) || (x > rows - room->width || x < 0)) return 1;
+      if (mvwinch(wnd,y,x) == '.' || mvwinch(wnd,y,x) == '#' || y > cols - room->height || y < 0 || x > rows - room->width || x < 0) return 1;
     }
   }
 
@@ -222,7 +223,7 @@ int main()
   // printw("randomX: %d | randomY: %d",randomX,randomY);
   srand(time(NULL));
   int firstPosition = rand() % 12 + 1;
-  int maxRooms = 10, iterations = 0, rooms = 0;
+  int maxRooms = 30, iterations = 0, rooms = 0;
   NormalRoom * room = create(col,row);
   while (1) {
     if(rooms == maxRooms) break;
@@ -230,8 +231,10 @@ int main()
     if (key == 'p' || key == 'P') {
       rooms++;
       room = randomizePosition(wnd,room,col,row,firstPosition,iterations);
-      drawRoom(room);
-      drawDoor(room);
+      if (!(mvinch(room->pos.y,room->pos.x) == '#' || mvinch(room->pos.y,room->pos.x) == '.')) {
+        drawRoom(room);
+        drawDoor(room);
+      }
     }
   }
 
