@@ -101,10 +101,10 @@ NormalRoom * randomizePosition(WINDOW * wnd,NormalRoom * room, int col, int row,
   iterations++;
   NormalRoom * newRoom = createNormalRoom(&row,&col);
   Position p = room->pos;
-  int top = 10, right = 12, bottom = 3;
-  int x = 0, y = 0;
-  int distanceX = 13;
-  int distance = 5;
+  int top = 10, right = 12, bottom = 3, left = 6; // doors positioning
+  int x = 0, y = 0; // room positioning
+  int distanceX = 13; // gap X axis
+  int distance = 5; // gap Y axis
   switch (first) {
     case 1:
       x = p.x - newRoom->width - distanceX;
@@ -149,35 +149,40 @@ NormalRoom * randomizePosition(WINDOW * wnd,NormalRoom * room, int col, int row,
       first++;
       break;
     case 8:
-      x = p.x + newRoom->width;
+      x = p.x + (newRoom->width * 3/4);
       y = p.y + newRoom->height + distance;
+      makeDoor(bottom,room);
       first++;
       break;
     case 9:
-      x = p.x;
+      x = p.x - newRoom->width;
       y = p.y + newRoom->height + distance;
+      makeDoor(bottom,room);
       first++;
       break;
     case 10:
       x = p.x - newRoom->width - distanceX;
       y = p.y + newRoom->height + distance;
+      makeDoor(left,room);
       first++;
       break;
     case 11:
       x = p.x - newRoom->width - distanceX;
       y = p.y + (newRoom->height / 2);
+      makeDoor(left,room);
       first++;
       break;
     case 12:
       x = p.x - newRoom->width - distanceX;
       y = p.y;
-      first = 1;
+      makeDoor(left,room);
       break;
   }
   
   int has = checkPos(room,y,x,wnd,col,row);
   if (has == 1) {
     free(newRoom);
+    if (first == 12) first = 1;
     randomizePosition(wnd,room,col,row,first,iterations);
   } else {
     newRoom->pos.x = x;
@@ -224,7 +229,7 @@ int main()
     int key = getch();
     if (key == 'p' || key == 'P') {
       rooms++;
-      room = randomizePosition(wnd,room,col,row,7,iterations);
+      room = randomizePosition(wnd,room,col,row,firstPosition,iterations);
       drawRoom(room);
       drawDoor(room);
     }
