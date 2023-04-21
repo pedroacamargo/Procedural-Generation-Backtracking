@@ -35,9 +35,10 @@ NormalRoom * createNormalRoom(int *rows, int *cols) {
   newRoom->height = rand() % 6 + 4;
 
   // position YX axis ( - height for the room doesn't overflow the screen)
-  newRoom->pos.y = (rand() % (*rows - newRoom->height) + 1); 
-  newRoom->pos.x = (rand() % (*cols - newRoom->width) + 1);
-  // newRoom->pos.x = 10;
+  // newRoom->pos.y = (rand() % (*rows - newRoom->height) + 1); 
+  // newRoom->pos.x = (rand() % (*cols - newRoom->width) + 1);
+  newRoom->pos.x = 220;
+  newRoom->pos.y = 0;
   // newRoom->pos.y = *rows - newRoom->height - 1; 
 
   return newRoom;
@@ -190,6 +191,7 @@ NormalRoom * randomizePosition(WINDOW * wnd,NormalRoom * room, int col, int row,
     if (newRoom->pos.x == room->pos.x && newRoom->pos.y == room->pos.y) return room;
     newRoom = makeDoor(first, newRoom);
     drawDoor(room);
+    drawHallway(newRoom,room,wnd);
     return newRoom;
   }
 }
@@ -238,7 +240,11 @@ int main()
     }
   }
 
-  
+  // Notes:
+
+  // When create the system to delete the map when passing level, create an array of rooms and free all the allocated memory of them.  
+
+
 
   getch();
 

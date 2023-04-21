@@ -4,5 +4,6 @@
 #include "structs.h"
 #include "main.h"
 #include "door.h"
+#include "hallways.h"
 
 #endif

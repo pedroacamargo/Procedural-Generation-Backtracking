@@ -27,10 +27,10 @@ NormalRoom * makeDoor(int first,NormalRoom * room) {
     room->door.x = room->pos.x;
     room->door.y = randomY + room->pos.y;
   }
-
-
   return room;
 }
+
+
 
 void drawDoor(NormalRoom * room) {
   mvprintw(room->door.y,room->door.x,"+");
