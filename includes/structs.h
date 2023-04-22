@@ -13,6 +13,7 @@ typedef struct NormalRoom
 	int height;
 	int width;
 	Position door;
+	char doorAxis; // x/y -> THIS IS JUST TO HELP IN THE HALLWAY CONNECTION
 	// int loot; 1-rara 2-comum
 	// int monsters;
 	// int difficulty;

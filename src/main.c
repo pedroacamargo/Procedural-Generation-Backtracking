@@ -28,17 +28,17 @@ NormalRoom * create(int col, int row) {
 
 NormalRoom * createNormalRoom(int *rows, int *cols) {
   NormalRoom * newRoom;
-  newRoom = malloc(sizeof(NormalRoom));
+  newRoom = malloc(sizeof(NormalRoom) + sizeof('x'));
 
   // Room width/height randomization (width 10 - 20/ height 4 - 14)
   newRoom->width = rand() % 10 + 10;
   newRoom->height = rand() % 6 + 4;
 
   // position YX axis ( - height for the room doesn't overflow the screen)
-  // newRoom->pos.y = (rand() % (*rows - newRoom->height) + 1); 
-  // newRoom->pos.x = (rand() % (*cols - newRoom->width) + 1);
-  newRoom->pos.x = 220;
-  newRoom->pos.y = 0;
+  newRoom->pos.y = (rand() % (*rows - newRoom->height) + 1); 
+  newRoom->pos.x = (rand() % (*cols - newRoom->width) + 1);
+  // newRoom->pos.x = 220;
+  // newRoom->pos.y = 0;
   // newRoom->pos.y = *rows - newRoom->height - 1; 
 
   return newRoom;
@@ -51,12 +51,16 @@ void drawRoom(NormalRoom * room) {
   for (int x = room->pos.x + 1; x < room->pos.x + room->width - 1; x++) {
     if (mvinch(room->pos.y,x) == '.') {
       mvprintw(room->pos.y,x,"."); // overwrite rooms
+    } else if(mvinch(room->pos.y,x) == '+') {
+      mvprintw(room->pos.y,x,"+");
     } else {
       mvprintw(room->pos.y,x, "#");
     }
      
     if (mvinch(room->pos.y + room->height,x) == '.') {
       mvprintw(room->pos.y + room->height,x,"."); // overwrite rooms
+    } else if(mvinch(room->pos.y + room->height,x) == '+') {
+      mvprintw(room->pos.y + room->height,x,"+");
     } else {
       mvprintw(room->pos.y + room->height, x, "#");
     }
@@ -67,13 +71,19 @@ void drawRoom(NormalRoom * room) {
     // draw side walls
     if (mvinch(y,room->pos.x) == '.') {
       mvprintw(y,room->pos.x,"."); // overwrite rooms
-    } else {
+    } else if(mvinch(y,room->pos.x) != '+') {
       mvprintw(y,room->pos.x,"#");
+    } else {
+      mvprintw(y,room->pos.x,"+");
     }
 
     if (mvinch(y,room->pos.x + room->width) == '.') {
       mvprintw(y,room->pos.x + room->width, ".");
-    } else {
+    } 
+    // else if(mvinch(y,room->pos.x + room->width) == '+') {
+      // mvaddch(y,room->pos.x + room->width,'+');
+    // } 
+    else {
       mvprintw(y,room->pos.x + room->width - 1, "#");
     }
 
@@ -82,6 +92,11 @@ void drawRoom(NormalRoom * room) {
       if (y >= room->pos.y + room->height - 1) break; 
       mvprintw(y + 1,x,".");
     }    
+  }
+
+  // fix a bug
+  for (int i = room->pos.y;i < room->door.y;i++) {
+    mvprintw(i,room->pos.x + room->width - 1,"#");
   }
 }
 
@@ -205,7 +220,7 @@ int checkPos(NormalRoom * room, int randomY, int randomX, WINDOW * wnd, int cols
   for (int x = areaXstart;x < areaXend; x++) {
     for (int y = areaYstart; y < areaYend; y++) {
       refresh(); 
-      if (mvwinch(wnd,y,x) == '.' || mvwinch(wnd,y,x) == '#' || y > cols - room->height || y < 0 || x > rows - room->width || x < 0) return 1;
+      if (mvwinch(wnd,y,x) == '.' || mvwinch(wnd,y,x) == '#'|| mvwinch(wnd,y,x) == '+' || y > cols - room->height || y < 0 || x > rows - room->width || x < 0) return 1;
     }
   }
 

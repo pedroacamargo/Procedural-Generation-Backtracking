@@ -4,9 +4,11 @@
 void drawHallway(NormalRoom * newRoom,NormalRoom * room, WINDOW * wnd);
 // Given the previous room and the actual room, connect each room
 
+int isThereAFloor(NormalRoom * room);
+
 int isInsideAWall(NormalRoom * room, int move, char axis);
 
-NormalRoom * changeDoorPosition(NormalRoom * newRoom, WINDOW * wnd);
+int changeDoorPosition(NormalRoom * room, WINDOW * wnd);
 
 int calculateDistanceRooms(NormalRoom * newRoom, NormalRoom * room);
 // Calculate the distance between 2 rooms
