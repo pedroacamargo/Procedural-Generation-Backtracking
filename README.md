@@ -13,4 +13,7 @@ generated outside the main screen, the program won't stop. Besides that, each it
  This process continues until a solution is found or all possibilities have been tried.
 </p>
 
-<img src="img/example.png" alt="Example picture" width="500" height="500">
+<hr>
+<h3 align="center"><samp><strong>Example of a small map</strong></samp></h3>
+<p align="center"><img src="img/example.png" alt="Example picture" width="500" height="500"> <br> <sub>Picture taken at 23/04/2023</sub></p>
+
