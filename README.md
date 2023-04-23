@@ -16,4 +16,23 @@ generated outside the main screen, the program won't stop. Besides that, each it
 <hr>
 <h3 align="center"><samp><strong>Example of a small map</strong></samp></h3>
 <p align="center"><img src="img/example.png" alt="Example picture" width="500" height="500"> <br> <sub>Picture taken at 23/04/2023</sub></p>
+<hr>
 
+<h2>How to install</h2>
+<p>Just clone the repo inside any directory in your pc</p>
+<pre>$ git clone https://github.com/pedroacamargo/backtracking-study</pre>
+<p>Type these commands in the given order for the algorithm work as expected</p>
+<pre>$ make clean</pre>
+<pre>$ make</pre>
+<p>Then you can type <strong><code>./play</code></strong> in the terminal and the ncurses window in terminal will open</p>
+<p>To generate the map, just hold the key <em><strong>p</strong></em></p>
+<hr>
+<h3>Developed by:</h3>
+<table>
+<tr>
+ <th><strong><a href="https://github.com/pedroacamargo">Pedro Augusto Camargo</a></strong></th>
+</tr>
+<tr>
+ <td align="center"><img src="https://avatars.githubusercontent.com/u/98715404?s=400&u=1d27a23534700cfa2fb02fc716db89b023abb54d&v=4" width="150"></td>
+</tr>
+</table>
