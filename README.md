@@ -13,4 +13,4 @@ generated outside the main screen, the program won't stop. Besides that, each it
  This process continues until a solution is found or all possibilities have been tried.
 </p>
 
-<img href="img/example.png" alt="Example picture">
+<img src="img/example.png" alt="Example picture" width="500" height="500">
