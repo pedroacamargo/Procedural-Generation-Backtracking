@@ -1,4 +1,4 @@
-<h2>Procedural Generation - Backtracking algorithm inspired</h2>
+<h2>Procedural Generation - Backtracking inspired algorithm</h2>
 
 <samp><p>I developed this algorithm for the LA project of my university, it consists in a procedural map generation algorithm built from scratch.</p></samp>
 
