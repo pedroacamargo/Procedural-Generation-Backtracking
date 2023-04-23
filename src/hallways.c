@@ -30,6 +30,7 @@ void drawHallway(NormalRoom * newRoom, NormalRoom * room,WINDOW * wnd) {
 
   char axis = 'x';
   while (distance != 0) {
+    getch();
     int xDist = calculateDistanceXAxis(&newRoom->door,&room->door,0);
     int yDist = calculateDistanceYAxis(&newRoom->door,&room->door,0);
 
@@ -39,6 +40,7 @@ void drawHallway(NormalRoom * newRoom, NormalRoom * room,WINDOW * wnd) {
       xDist--;
     }
 
+    if((xDist + yDist) == 0) break;
 
     // THIS CODE NEEDS TO BE OPTIMIZED !!!!
     // little code just to change the axis of the hallway creation if theres a wall in the way or dist in x/y axis is 0
@@ -129,7 +131,6 @@ void drawHallway(NormalRoom * newRoom, NormalRoom * room,WINDOW * wnd) {
     }
   
    
-    if((xDist + yDist) == 0) break;
     distance--;
   }
 }

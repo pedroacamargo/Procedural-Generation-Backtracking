@@ -12,3 +12,5 @@ generated outside the main screen, the program won't stop. Besides that, each it
  If a solution violates a constraint, the algorithm backtracks and tries another option.
  This process continues until a solution is found or all possibilities have been tried.
 </p>
+
+<img href="img/example.png" alt="Example picture">
