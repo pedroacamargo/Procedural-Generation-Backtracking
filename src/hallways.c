@@ -27,7 +27,7 @@ void drawHallway(NormalRoom * newRoom, NormalRoom * room,WINDOW * wnd) {
   // Needs to be reseted every iteration to axisSwap = 0; 
   int axisSwap = 0; // if = 0, axis didn't changed, if = 1, axis've just changed 
 
-
+  int isFirst = 1; // if is the first iteration in the hallway construction
   char axis = 'x';
   while (distance != 0) {
     getch();
@@ -42,21 +42,90 @@ void drawHallway(NormalRoom * newRoom, NormalRoom * room,WINDOW * wnd) {
 
     if((xDist + yDist) == 0) break;
 
+    int sizeForbiddenToPass = 2;
+    unsigned int blocks[] = {'#', '.'};
+
+    // this code is remediating in the case the hallway has a wall in front of it
+    for (int i = 0; i < sizeForbiddenToPass; i++) {
+      
+      // fix a bug -> the first iteration the hallway will be inside a wall, then the code needs to jump 1 iteration
+      if (isFirst == 1) {
+        isFirst = 0;
+        break;
+      }
+
+
+      if ((mvinch(room->door.y,room->door.x + 1) == blocks[i] || mvinch(room->door.y,room->door.x - 1) == blocks[i] || xDist == 0) && axis == 'x') {
+        // function to check which way is faster
+        int distanceY = calculateDistanceYAxis(&newRoom->door,&room->door,0);
+        int newDistanceY = calculateDistanceYAxis(&newRoom->door,&room->door,1);
+
+        // if distance going down increased (the hallway needs to go bottom)
+        if (distanceY > newDistanceY) {
+          int y = room->door.y;
+          axis = 'y';
+          while (mvinch(y,room->door.x + 1) == blocks[i] || mvinch(y,room->door.x - 1) == blocks[i]) {
+            room->door.y++;
+            y++;
+            distance = calculateDistanceRooms(newRoom,room); // distance between the rooms doors in manhattan distance
+            mvprintw(room->door.y,room->door.x,"+");
+          }
+        // if distance goind down decreased
+        } else if (distanceY <= newDistanceY) {
+          int y = room->door.y;
+          axis = 'y';
+          while (mvinch(y,room->door.x + 1) == blocks[i] || mvinch(y,room->door.x - 1) == blocks[i]) {
+            room->door.y--;
+            y--;
+            distance = calculateDistanceRooms(newRoom,room); // distance between the rooms doors in manhattan distance
+            mvprintw(room->door.y,room->door.x,"+");
+          }
+        }
+      } else if ((mvinch(room->door.y + 1,room->door.x) == blocks[i] || mvinch(room->door.y - 1,room->door.x) == blocks[i] || yDist == 0) && axis == 'y') {
+        // function to check which way is faster
+        int distanceX = calculateDistanceXAxis(&newRoom->door,&room->door,0);
+        int newDistanceX = calculateDistanceXAxis(&newRoom->door,&room->door,1);
+
+        // if distance going right increased (the hallway needs to go left)
+        if (distanceX > newDistanceX) {
+          int x = room->door.x;
+          axis = 'x';
+          while (mvinch(room->door.y + 1,x) == blocks[i] || mvinch(room->door.y - 1,x) == blocks[i]) {
+            room->door.x++;
+            x++;
+            distance = calculateDistanceRooms(newRoom,room); // distance between the rooms doors in manhattan distance
+            mvprintw(room->door.y,room->door.x,"+");
+          }
+        // if distance goind down decreased
+        } else if (distanceX <= newDistanceX) {
+          axis = 'x';
+          int x = room->door.x;
+          while (mvinch(room->door.y + 1,x) == blocks[i] || mvinch(room->door.y - 1,x) == blocks[i]) {
+            room->door.x--;
+            x--;
+            distance = calculateDistanceRooms(newRoom,room); // distance between the rooms doors in manhattan distance
+            mvprintw(room->door.y,room->door.x,"+");
+          }
+        }
+      }
+    }
+
+
     // THIS CODE NEEDS TO BE OPTIMIZED !!!!
     // little code just to change the axis of the hallway creation if theres a wall in the way or dist in x/y axis is 0
-    if (mvinch(room->door.y,room->door.x + 1) == '#' || mvinch(room->door.y,room->door.x - 1) == '#' || xDist == 0) {
-      axis = 'y';
-      axisSwap = 1;
-    } else if (mvinch(room->door.y + 1,room->door.x) == '#' || mvinch(room->door.y - 1,room->door.x) == '#' || yDist == 0) {
-      axis = 'x';
-      axisSwap = 1;
-    }
+    // if (mvinch(room->door.y,room->door.x + 1) == '#' || mvinch(room->door.y,room->door.x - 1) == '#' || xDist == 0) {
+      // axis = 'y';
+      // axisSwap = 1;
+    // } 
+    // if (mvinch(room->door.y + 1,room->door.x) == '#' || mvinch(room->door.y - 1,room->door.x) == '#' || yDist == 0) {
+      // axis = 'x';
+      // axisSwap = 1;
+    // }
 
 
 
 
     int newDistance = calculateNewDistance(&newRoom->door,&room->door,1,axis); // this will calculate the distance between the 2 doors in manhattan distance
-    // 7 > 6
 
     // If the distance calculating the new position decreased, print the hallway pixel in this position
     if (distance < newDistance) {
@@ -66,7 +135,6 @@ void drawHallway(NormalRoom * newRoom, NormalRoom * room,WINDOW * wnd) {
         // if there is a floor, don't create corridors
         if (isThereAFloor(room) == 0) {
           room->door.x -= 1;
-          distance--;
           continue;
         } 
 
@@ -131,7 +199,7 @@ void drawHallway(NormalRoom * newRoom, NormalRoom * room,WINDOW * wnd) {
     }
   
    
-    distance--;
+  distance = calculateDistanceRooms(newRoom,room); // distance between the rooms doors in manhattan distance (Update the distance)
   }
 }
 

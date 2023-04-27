@@ -178,13 +178,13 @@ NormalRoom * randomizePosition(WINDOW * wnd,NormalRoom * room, int col, int row,
       break;
     case 10:
       x = p.x - newRoom->width - distanceX;
-      y = p.y + newRoom->height + distance;
+      y = p.y + newRoom->height + 2 + distance;
       makeDoor(left,room);
       first++;
       break;
     case 11:
       x = p.x - newRoom->width - distanceX;
-      y = p.y + (newRoom->height / 2);
+      y = p.y + (newRoom->height / 2) + 5;
       makeDoor(left,room);
       first++;
       break;
@@ -247,7 +247,7 @@ int main()
     int key = getch();
     if (key == 'p' || key == 'P') {
       rooms++;
-      room = randomizePosition(wnd,room,col,row,firstPosition,iterations);
+      room = randomizePosition(wnd,room,col,row,10,iterations);
       if (!(mvinch(room->pos.y,room->pos.x) == '#' || mvinch(room->pos.y,room->pos.x) == '.')) {
         drawRoom(room);
         drawDoor(room);
