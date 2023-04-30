@@ -10,17 +10,8 @@
 // door.y + 1 -> baixo
 // door.y - 1 -> cima
 
-
 // Main function
 void drawHallway(NormalRoom * newRoom, NormalRoom * room,WINDOW * wnd) {
-  // the below function takes the position of the door from the new room (the recently created) and pushes it +1 square, for hallways don't be created 
-  // in the direction of the wall.
-  // isInsideAWall(newRoom,1,'x');
-
-  // debug door axis:
-  // mvprintw(20,20,"%c",newRoom->doorAxis);
-
-
   int distance = calculateDistanceRooms(newRoom,room); // distance between the rooms doors in manhattan distance
 
   // This is an important variable to say if the direction changed, to help in the corridors' walls construction.
@@ -30,7 +21,6 @@ void drawHallway(NormalRoom * newRoom, NormalRoom * room,WINDOW * wnd) {
   int isFirst = 1; // if is the first iteration in the hallway construction
   char axis = 'x';
   while (distance != 0) {
-    getch();
     int xDist = calculateDistanceXAxis(&newRoom->door,&room->door,0);
     int yDist = calculateDistanceYAxis(&newRoom->door,&room->door,0);
 
@@ -50,6 +40,7 @@ void drawHallway(NormalRoom * newRoom, NormalRoom * room,WINDOW * wnd) {
       
       // fix a bug -> the first iteration the hallway will be inside a wall, then the code needs to jump 1 iteration
       if (isFirst == 1) {
+        buildWalls(room,axis,isFirst,axisSwap);
         isFirst = 0;
         break;
       }
@@ -59,6 +50,7 @@ void drawHallway(NormalRoom * newRoom, NormalRoom * room,WINDOW * wnd) {
         // function to check which way is faster
         int distanceY = calculateDistanceYAxis(&newRoom->door,&room->door,0);
         int newDistanceY = calculateDistanceYAxis(&newRoom->door,&room->door,1);
+        axisSwap = 1;
 
         // if distance going down increased (the hallway needs to go bottom)
         if (distanceY > newDistanceY) {
@@ -111,17 +103,6 @@ void drawHallway(NormalRoom * newRoom, NormalRoom * room,WINDOW * wnd) {
     }
 
 
-    // THIS CODE NEEDS TO BE OPTIMIZED !!!!
-    // little code just to change the axis of the hallway creation if theres a wall in the way or dist in x/y axis is 0
-    // if (mvinch(room->door.y,room->door.x + 1) == '#' || mvinch(room->door.y,room->door.x - 1) == '#' || xDist == 0) {
-      // axis = 'y';
-      // axisSwap = 1;
-    // } 
-    // if (mvinch(room->door.y + 1,room->door.x) == '#' || mvinch(room->door.y - 1,room->door.x) == '#' || yDist == 0) {
-      // axis = 'x';
-      // axisSwap = 1;
-    // }
-
 
 
 
@@ -143,9 +124,7 @@ void drawHallway(NormalRoom * newRoom, NormalRoom * room,WINDOW * wnd) {
           room->door.x -= 1; // go to left
         }
 
-        // mvprintw(room->door.y-1,room->door.x, "#");
         mvprintw(room->door.y, room->door.x, "+");
-        // mvprintw(room->door.y+1,room->door.x, "#");
       } else if (axis == 'y') {
         // go up
 
@@ -198,7 +177,8 @@ void drawHallway(NormalRoom * newRoom, NormalRoom * room,WINDOW * wnd) {
       }
     }
   
-   
+  buildWalls(room,axis,isFirst,axisSwap);
+  axisSwap = 0;
   distance = calculateDistanceRooms(newRoom,room); // distance between the rooms doors in manhattan distance (Update the distance)
   }
 }

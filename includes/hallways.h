@@ -6,8 +6,6 @@ void drawHallway(NormalRoom * newRoom,NormalRoom * room, WINDOW * wnd);
 
 int isThereAFloor(NormalRoom * room);
 
-void checkTheWay(NormalRoom * room, NormalRoom * newRoom, int isFirst, char axis,int xDist,int yDist);
-
 int isInsideAWall(NormalRoom * room, int move, char axis);
 
 int calculateDistanceRooms(NormalRoom * newRoom, NormalRoom * room);

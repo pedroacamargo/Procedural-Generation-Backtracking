@@ -79,11 +79,9 @@ void drawRoom(NormalRoom * room) {
 
     if (mvinch(y,room->pos.x + room->width) == '.') {
       mvprintw(y,room->pos.x + room->width, ".");
-    } 
-    // else if(mvinch(y,room->pos.x + room->width) == '+') {
-      // mvaddch(y,room->pos.x + room->width,'+');
-    // } 
-    else {
+    } else if(mvinch(y,room->pos.x + room->width) == '+') {
+      mvaddch(y,room->pos.x + room->width,'+');
+    } else {
       mvprintw(y,room->pos.x + room->width - 1, "#");
     }
 
@@ -237,7 +235,6 @@ int main()
   getmaxyx(wnd,col,row);
 
   printw("x: %d | y: %d\n",row,col);
-  // printw("randomX: %d | randomY: %d",randomX,randomY);
   srand(time(NULL));
   int firstPosition = rand() % 12 + 1;
   int maxRooms = 30, iterations = 0, rooms = 0;
@@ -247,7 +244,7 @@ int main()
     int key = getch();
     if (key == 'p' || key == 'P') {
       rooms++;
-      room = randomizePosition(wnd,room,col,row,10,iterations);
+      room = randomizePosition(wnd,room,col,row,firstPosition,iterations);
       if (!(mvinch(room->pos.y,room->pos.x) == '#' || mvinch(room->pos.y,room->pos.x) == '.')) {
         drawRoom(room);
         drawDoor(room);
@@ -259,6 +256,7 @@ int main()
 
   // When create the system to delete the map when passing level, create an array of rooms and free all the allocated memory of them.  
 
+  // Create a variable called isSwap to determine if the hallway changed it's axis, if changed then the walls will try to spawn in 3x3 spaces (make the corners)
 
 
   getch();

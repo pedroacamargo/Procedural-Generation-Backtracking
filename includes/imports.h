@@ -5,5 +5,6 @@
 #include "main.h"
 #include "door.h"
 #include "hallways.h"
+#include "hallwaysWalls.h"
 
 #endif
